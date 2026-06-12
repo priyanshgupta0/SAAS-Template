@@ -9,7 +9,8 @@ description: "Task list template for feature implementation"
 
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: REQUIRED per constitution — Jest + React Testing Library; minimum 90% coverage.
+Unit tests MUST be included for all logic, hooks, and components in every user story phase.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -49,9 +50,11 @@ description: "Task list template for feature implementation"
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize [language] project with [framework] dependencies
-- [ ] T003 [P] Configure linting and formatting tools
+- [ ] T001 Create Atomic Design project structure per implementation plan (atoms→pages)
+- [ ] T002 Initialize TypeScript (strict) project with React/Next.js, Tailwind CSS, Jest, and RTL
+- [ ] T003 [P] Configure ESLint, Prettier, max-lines rule (350), and coverage threshold (90%)
+- [ ] T004 [P] Scaffold data/, public/, and .env.example with API_BASE_URL per constitution
+- [ ] T005 [P] Implement universal Axios client in src/lib/apiClient.ts
 
 ---
 
@@ -63,12 +66,12 @@ description: "Task list template for feature implementation"
 
 Examples of foundational tasks (adjust based on your project):
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
+- [ ] T006 Setup database schema and migrations framework (if applicable)
+- [ ] T007 [P] Implement secure authentication and authorization framework
+- [ ] T008 [P] Create base TypeScript types/interfaces and API response types
+- [ ] T009 [P] Scaffold src/services/api/ with initial domain API module(s)
+- [ ] T010 Configure error handling, logging, and Axios interceptors
+- [ ] T011 Setup environment configuration management (API_BASE_URL and secrets via env vars)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -80,21 +83,21 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 1 (REQUIRED) ⚠️
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
+> **NOTE: Write these tests FIRST, ensure they FAIL before implementation (Jest + RTL)**
 
-- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T012 [P] [US1] Unit test for [component/logic] in tests/unit/[name].test.ts(x)
+- [ ] T013 [P] [US1] Integration test for [user journey] in tests/integration/[name].test.ts(x)
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T016 [US1] Add validation and error handling
-- [ ] T017 [US1] Add logging for user story 1 operations
+- [ ] T014 [P] [US1] Create TypeScript types/interfaces in src/types/[entity].ts
+- [ ] T015 [P] [US1] Create responsive Atomic component(s) with Tailwind in src/components/[layer]/[name].tsx
+- [ ] T016 [US1] Add domain API functions in src/services/api/[domain]Api.ts using universal client
+- [ ] T017 [US1] Implement [feature/page] in src/[location]/[file].tsx (≤350 lines; split if needed)
+- [ ] T018 [US1] Add validation, error handling, auth checks; verify responsive at 320/768/1280px
+- [ ] T019 [US1] Verify coverage ≥ 90% for user story 1 scope
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -106,17 +109,17 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 2 (REQUIRED) ⚠️
 
-- [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T020 [P] [US2] Unit test for [component/logic] in tests/unit/[name].test.ts(x)
+- [ ] T021 [P] [US2] Integration test for [user journey] in tests/integration/[name].test.ts(x)
 
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
-- [ ] T021 [US2] Implement [Service] in src/services/[service].py
-- [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T023 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T022 [P] [US2] Create TypeScript types/interfaces in src/types/[entity].ts
+- [ ] T023 [US2] Implement responsive Atomic component(s), API module, and page for US2
+- [ ] T024 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T025 [US2] Verify responsive layout and file-size compliance (≤350 lines)
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
@@ -128,16 +131,16 @@ Examples of foundational tasks (adjust based on your project):
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 3 (REQUIRED) ⚠️
 
-- [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T026 [P] [US3] Unit test for [component/logic] in tests/unit/[name].test.ts(x)
+- [ ] T027 [P] [US3] Integration test for [user journey] in tests/integration/[name].test.ts(x)
 
 ### Implementation for User Story 3
 
-- [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
-- [ ] T027 [US3] Implement [Service] in src/services/[service].py
-- [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T028 [P] [US3] Create TypeScript types/interfaces in src/types/[entity].ts
+- [ ] T029 [US3] Implement responsive Atomic component(s), API module, and page for US3
+- [ ] T030 [US3] Verify responsive layout, API pattern, and file-size compliance
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -154,7 +157,7 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] TXXX [P] Documentation updates in docs/
 - [ ] TXXX Code cleanup and refactoring
 - [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
+- [ ] TXXX [P] Fill coverage gaps to maintain ≥ 90% in tests/unit/
 - [ ] TXXX Security hardening
 - [ ] TXXX Run quickstart.md validation
 

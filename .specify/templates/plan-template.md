@@ -18,21 +18,21 @@
   the iteration process.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]
+**Language/Version**: TypeScript (strict mode, latest stable)
 
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]
+**Primary Dependencies**: React, Next.js (web apps), Tailwind CSS, Axios, Jest, React Testing Library
 
 **Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
 
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
+**Testing**: Jest + React Testing Library; minimum 90% project coverage (constitution)
 
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Target Platform**: [e.g., Web browser, Node.js server, or NEEDS CLARIFICATION]
 
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]
+**Project Type**: [e.g., web-application (Atomic Design) / library / api or NEEDS CLARIFICATION]
 
 **Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
 
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]
+**Constraints**: Responsive (mobile/tablet/desktop); ≤350 lines per file; API base URL via env; universal Axios client
 
 **Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
 
@@ -40,7 +40,16 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify compliance with `.specify/memory/constitution.md` (v1.1.0):
+
+- [ ] **Atomic Design**: All screens built from atoms→pages; Tailwind styling; no duplication
+- [ ] **Strict TypeScript**: All entities typed; `strict` mode; no unjustified `any`
+- [ ] **Security**: Authn/authz defined for protected routes; OWASP risks addressed
+- [ ] **Layout**: Dummy data in `data/`; assets categorized under `public/`
+- [ ] **Responsive UI**: Tailwind breakpoints; verified at 320px, 768px, 1280px
+- [ ] **API Layer**: Universal Axios client; base URL in env; domain functions in `src/services/api/`
+- [ ] **Testing**: Jest + RTL plan; unit tests per story; 90% coverage target
+- [ ] **Quality**: Lint/type-check gates; zero lint errors; DRY modules; files ≤350 lines
 
 ## Project Structure
 
@@ -65,39 +74,36 @@ specs/[###-feature]/
 -->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
+# Web application (Atomic Design — constitution default for React/Next.js)
 src/
-├── models/
+├── components/
+│   ├── atoms/
+│   ├── molecules/
+│   ├── organisms/
+│   ├── templates/
+│   └── pages/
+├── hooks/
+├── lib/
+│   └── apiClient.ts     # universal Axios client
 ├── services/
-├── cli/
-└── lib/
-
+│   └── api/             # domain API functions (userApi.ts, etc.)
+├── types/
+└── styles/              # Tailwind global entry
+data/                    # dummy/seed data by domain (constitution)
+public/                  # images/, fonts/, icons/, documents/
+.env                     # API_BASE_URL (not committed)
 tests/
-├── contract/
+├── unit/
 ├── integration/
-└── unit/
+└── __mocks__/
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
+# [REMOVE IF UNUSED] Option: API-only backend
 backend/
 ├── src/
 │   ├── models/
 │   ├── services/
 │   └── api/
 └── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
 ```
 
 **Structure Decision**: [Document the selected structure and reference the real

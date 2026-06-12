@@ -1,0 +1,532 @@
+openapi: 3.0.3
+info:
+  title: SaaS Starter Template API
+  description: REST API for the dynamic SaaS starter template (Next.js App Router)
+  version: 1.0.0
+  contact:
+    name: API Support
+
+servers:
+  - url: /api
+    description: Same-origin Next.js API routes
+
+tags:
+  - name: Auth
+    description: Registration and session endpoints
+  - name: Users
+    description: User profile and role management
+  - name: Contact
+    description: Contact form submissions
+  - name: Content
+    description: Public and admin content endpoints
+  - name: Health
+    description: Service health checks
+
+paths:
+  /health:
+    get:
+      tags: [Health]
+      summary: Health check
+      operationId: getHealth
+      responses:
+        '200':
+          description: Service healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+  /auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      operationId: registerUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/session:
+    get:
+      tags: [Auth]
+      summary: Get current session
+      operationId: getSession
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      responses:
+        '200':
+          description: Active session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users/me:
+    get:
+      tags: [Users]
+      summary: Get current user profile
+      operationId: getCurrentUser
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    patch:
+      tags: [Users]
+      summary: Update current user profile
+      operationId: updateCurrentUser
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /users/{userId}/role:
+    patch:
+      tags: [Users]
+      summary: Update user role (Admin only)
+      operationId: updateUserRole
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoleRequest'
+      responses:
+        '200':
+          description: Role updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserPublic'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /contact:
+    post:
+      tags: [Contact]
+      summary: Submit contact form
+      operationId: createContactSubmission
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ContactRequest'
+      responses:
+        '201':
+          description: Submission created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContactSubmission'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    get:
+      tags: [Contact]
+      summary: List contact submissions (Admin/Manager)
+      operationId: listContactSubmissions
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [NEW, READ, ARCHIVED]
+      responses:
+        '200':
+          description: Submission list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ContactSubmission'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /content/pricing:
+    get:
+      tags: [Content]
+      summary: Get active pricing plans
+      operationId: getPricingPlans
+      responses:
+        '200':
+          description: Pricing tiers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PricingPlan'
+
+  /content/team:
+    get:
+      tags: [Content]
+      summary: Get team members
+      operationId: getTeamMembers
+      responses:
+        '200':
+          description: Team roster
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamMember'
+
+  /content/careers:
+    get:
+      tags: [Content]
+      summary: Get active job openings
+      operationId: getCareerOpenings
+      responses:
+        '200':
+          description: Career listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CareerOpening'
+
+  /content/sections/{key}:
+    get:
+      tags: [Content]
+      summary: Get site section by key
+      operationId: getSiteSection
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+            example: landing.hero
+      responses:
+        '200':
+          description: Section payload
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteSection'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      tags: [Content]
+      summary: Update site section (Admin only)
+      operationId: updateSiteSection
+      security:
+        - bearerAuth: []
+        - cookieAuth: []
+      parameters:
+        - name: key
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSiteSectionRequest'
+      responses:
+        '200':
+          description: Section updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SiteSection'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: next-auth.session-token
+
+  responses:
+    BadRequest:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Unauthorized:
+      description: Not authenticated
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    Forbidden:
+      description: Insufficient role
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    HealthResponse:
+      type: object
+      required: [status, timestamp]
+      properties:
+        status:
+          type: string
+          example: ok
+        timestamp:
+          type: string
+          format: date-time
+
+    ErrorResponse:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+
+    Role:
+      type: string
+      enum: [ADMIN, MANAGER, USER]
+
+    RegisterRequest:
+      type: object
+      required: [email, password, name]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+        name:
+          type: string
+          minLength: 1
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        theme:
+          type: string
+          enum: [light, dark, system]
+
+    UpdateRoleRequest:
+      type: object
+      required: [role]
+      properties:
+        role:
+          $ref: '#/components/schemas/Role'
+
+    UserPublic:
+      type: object
+      required: [id, email, name, role, createdAt]
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        role:
+          $ref: '#/components/schemas/Role'
+        theme:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    SessionResponse:
+      type: object
+      required: [authenticated]
+      properties:
+        authenticated:
+          type: boolean
+        user:
+          $ref: '#/components/schemas/UserPublic'
+
+    ContactRequest:
+      type: object
+      required: [name, email, message]
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        email:
+          type: string
+          format: email
+        message:
+          type: string
+          maxLength: 2000
+
+    ContactSubmission:
+      allOf:
+        - $ref: '#/components/schemas/ContactRequest'
+        - type: object
+          required: [id, status, createdAt]
+          properties:
+            id:
+              type: string
+              format: uuid
+            status:
+              type: string
+              enum: [NEW, READ, ARCHIVED]
+            createdAt:
+              type: string
+              format: date-time
+
+    PricingPlan:
+      type: object
+      required: [id, slug, name, priceCents, billingPeriod, features]
+      properties:
+        id:
+          type: string
+          format: uuid
+        slug:
+          type: string
+        name:
+          type: string
+        priceCents:
+          type: integer
+        currency:
+          type: string
+        billingPeriod:
+          type: string
+        features:
+          type: array
+          items:
+            type: string
+        highlighted:
+          type: boolean
+
+    TeamMember:
+      type: object
+      required: [id, name, title]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        title:
+          type: string
+        bio:
+          type: string
+        avatarUrl:
+          type: string
+        linkedIn:
+          type: string
+        twitter:
+          type: string
+
+    CareerOpening:
+      type: object
+      required: [id, title, department, location, description]
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        department:
+          type: string
+        location:
+          type: string
+        description:
+          type: string
+        postedAt:
+          type: string
+          format: date-time
+
+    SiteSection:
+      type: object
+      required: [key, page, payload]
+      properties:
+        key:
+          type: string
+        page:
+          type: string
+        payload:
+          type: object
+          additionalProperties: true
+
+    UpdateSiteSectionRequest:
+      type: object
+      required: [payload]
+      properties:
+        payload:
+          type: object
+          additionalProperties: true

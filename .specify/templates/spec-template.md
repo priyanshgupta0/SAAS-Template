@@ -83,6 +83,13 @@
 <!--
   ACTION REQUIRED: The content in this section represents placeholders.
   Fill them out with the right functional requirements.
+  Constitution defaults (see .specify/memory/constitution.md v1.1.0):
+  - Atomic Design for all screens; Tailwind CSS; fully responsive layouts
+  - Strict TypeScript types/interfaces for all entities
+  - Secure authn/authz on protected surfaces
+  - Dummy data in data/; assets in categorized public/ subfolders
+  - Universal Axios API client; base URL in env; domain functions in src/services/api/
+  - Files ≤350 lines; Jest + React Testing Library; 90% coverage minimum
 -->
 
 ### Functional Requirements
