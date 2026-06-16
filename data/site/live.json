@@ -1,0 +1,9 @@
+{
+  "title": "Live Showcase",
+  "subtitle": "See real-time metrics from our demo environment.",
+  "stats": [
+    { "label": "Active Users", "value": "12,847", "trend": "+12%" },
+    { "label": "API Requests", "value": "2.4M", "trend": "+8%" },
+    { "label": "Uptime", "value": "99.9%", "trend": "stable" }
+  ]
+}

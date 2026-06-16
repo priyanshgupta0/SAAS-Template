@@ -1,0 +1,9 @@
+{
+  "title": "About Us",
+  "mission": "We empower teams to launch SaaS products with confidence using a beautiful, extensible template.",
+  "values": [
+    { "title": "Quality", "description": "Strict TypeScript, tests, and zero lint debt." },
+    { "title": "Security", "description": "Auth and authorization built in from day one." },
+    { "title": "Velocity", "description": "Start fast without sacrificing architecture." }
+  ]
+}

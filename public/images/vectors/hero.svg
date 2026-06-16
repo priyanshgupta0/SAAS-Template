@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" fill="none">
+  <circle cx="200" cy="150" r="120" fill="currentColor" class="text-lavender-200 dark:text-lavender-800" opacity="0.5"/>
+  <path d="M100 200 Q200 80 300 200" stroke="currentColor" stroke-width="4" class="text-lavender-600" fill="none"/>
+  <circle cx="200" cy="120" r="40" fill="currentColor" class="text-lavender-500"/>
+</svg>

@@ -1,0 +1,22 @@
+{
+  "hero": {
+    "title": "Ship your SaaS faster",
+    "subtitle": "A modern, dynamic starter template with lavender elegance and production-ready patterns.",
+    "ctaPrimary": "Get Started",
+    "ctaSecondary": "View Pricing"
+  },
+  "features": [
+    {
+      "title": "Atomic Design",
+      "description": "Composable components from atoms to pages for maximum reuse."
+    },
+    {
+      "title": "Role-Based Auth",
+      "description": "Admin, Manager, and User flows with secure route protection."
+    },
+    {
+      "title": "API + Swagger",
+      "description": "Documented REST APIs backed by PostgreSQL."
+    }
+  ]
+}

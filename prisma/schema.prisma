@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  USER
+}
+
+enum ContactStatus {
+  NEW
+  READ
+  ARCHIVED
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  role          Role      @default(USER)
+  theme         String    @default("system")
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  siteSections  SiteSection[]
+}
+
+model ContactSubmission {
+  id        String        @id @default(uuid())
+  name      String
+  email     String
+  message   String
+  status    ContactStatus @default(NEW)
+  createdAt DateTime      @default(now())
+
+  @@index([status, createdAt])
+}
+
+model PricingPlan {
+  id            String  @id @default(uuid())
+  slug          String  @unique
+  name          String
+  priceCents    Int
+  currency      String  @default("USD")
+  billingPeriod String
+  features      Json
+  highlighted   Boolean @default(false)
+  sortOrder     Int     @default(0)
+  active        Boolean @default(true)
+}
+
+model TeamMember {
+  id        String  @id @default(uuid())
+  name      String
+  title     String
+  bio       String?
+  avatarUrl String?
+  linkedIn  String?
+  twitter   String?
+  sortOrder Int     @default(0)
+  active    Boolean @default(true)
+}
+
+model CareerOpening {
+  id          String   @id @default(uuid())
+  title       String
+  department  String
+  location    String
+  description String
+  active      Boolean  @default(true)
+  postedAt    DateTime @default(now())
+}
+
+model SiteSection {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  page        String
+  payload     Json
+  updatedAt   DateTime @updatedAt
+  updatedById String?
+  updatedBy   User?    @relation(fields: [updatedById], references: [id])
+}

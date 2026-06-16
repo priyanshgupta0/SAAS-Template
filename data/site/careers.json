@@ -1,0 +1,22 @@
+{
+  "openings": [
+    {
+      "title": "Senior Frontend Engineer",
+      "department": "Engineering",
+      "location": "Remote",
+      "description": "Build beautiful React components with Atomic Design and Tailwind."
+    },
+    {
+      "title": "Product Designer",
+      "department": "Design",
+      "location": "Remote",
+      "description": "Shape our lavender design system and marketing experiences."
+    },
+    {
+      "title": "DevOps Engineer",
+      "department": "Infrastructure",
+      "location": "New York, NY",
+      "description": "Scale our Next.js and PostgreSQL platform globally."
+    }
+  ]
+}

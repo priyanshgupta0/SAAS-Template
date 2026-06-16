@@ -1,0 +1,28 @@
+{
+  "members": [
+    {
+      "name": "Alex Rivera",
+      "title": "CEO & Co-founder",
+      "bio": "Building products that scale with empathy and precision.",
+      "avatarUrl": "/images/team/avatar-1.svg",
+      "linkedIn": "https://linkedin.com",
+      "twitter": "https://twitter.com",
+      "sortOrder": 1
+    },
+    {
+      "name": "Jordan Lee",
+      "title": "CTO",
+      "bio": "Full-stack architect passionate about developer experience.",
+      "avatarUrl": "/images/team/avatar-2.svg",
+      "linkedIn": "https://linkedin.com",
+      "sortOrder": 2
+    },
+    {
+      "name": "Sam Patel",
+      "title": "Head of Design",
+      "bio": "Crafting lavender-infused interfaces users love.",
+      "avatarUrl": "/images/team/avatar-3.svg",
+      "sortOrder": 3
+    }
+  ]
+}
